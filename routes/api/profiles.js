@@ -13,8 +13,8 @@ router.get('/test', (req, res) => {
 });
 
 /* 
-    $route  POST api/profiles/get
-    @desc   返回使用者資料json
+    $route  POST api/profiles/add
+    @desc   新增使用者訊息 返回json
     @access private
 */
 router.post('/add', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -27,6 +27,17 @@ router.post('/add', passport.authenticate('jwt', {session: false}), (req, res) =
     if(req.body.imgs) userProfile.imgs = req.body.imgs.split('|');
     new Profile(userProfile).save().then(profile => {
         res.json(profile)
+    })
+})
+
+/* 
+    $route  GET api/profiles/messages
+    @desc   取得使用者訊息 返回json
+    @access private
+*/
+router.get('/messages', passport.authenticate('jwt', {session: false}), (req, res) => {
+    Profile.find().then(message => {
+        res.json(message)
     })
 })
 
