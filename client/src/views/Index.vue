@@ -13,9 +13,9 @@ export default {
         }
     },
     mounted() {
-        // this.$axios.get('http://localhost:5000/api/profiles/test').then(res => {
-        //     this.message = res;
-        // })
+        this.$axios.get('/api/profiles/test').then(res => {
+            console.log(res)
+        })
     }
 }
 </script>

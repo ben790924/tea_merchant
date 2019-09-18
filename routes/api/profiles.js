@@ -9,7 +9,7 @@ const router = express.Router();
     @access public
 */
 router.get('/test', (req, res) => {
-    res.send('profile works')
+    res.json('profile works')
 });
 
 /* 
