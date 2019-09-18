@@ -9,8 +9,13 @@ export default {
     compenent: {},
     data() {
         return {
-            message: 'gaytytytyty'
+            message: 'gytytytyty'
         }
+    },
+    mounted() {
+        // this.$axios.get('http://localhost:5000/api/profiles/test').then(res => {
+        //     this.message = res;
+        // })
     }
 }
 </script>
