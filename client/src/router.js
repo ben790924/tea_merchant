@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from './views/Index.vue'
-import Login from './views/Login.vue'
 import About from './views/About.vue'
 import Location from './views/Location.vue'
 import Buy from './views/Buy.vue'
@@ -15,11 +14,6 @@ export default new Router({
       path: '/',
       name: 'Index',
       component: Index
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login
     },
     {
       path: '/about',
