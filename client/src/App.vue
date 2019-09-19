@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <login v-if="isLoginShow" />
-    <v-app-bar app color="teal darken-4" v-if="!isLoginShow">
+    <register v-if="isRegisterShow" @loggedIn="showRegister" />
+    <v-app-bar app color="teal darken-4" v-if="!isRegisterShow">
       <v-toolbar-title class="headline text-uppercase">
         <span class="white--text">順益茶行</span>
       </v-toolbar-title>
@@ -12,9 +12,9 @@
         <v-btn text class="white--text" to="/location">實體</v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>
-      <v-btn outlined small color="teal lighten-5" xs @click="showLogin">登入</v-btn>
+      <v-btn outlined small color="teal lighten-5" xs @click="showRegister">註冊</v-btn>
     </v-app-bar>
-    <v-content v-if="!isLoginShow">
+    <v-content v-if="!isRegisterShow">
       <router-view />
     </v-content>
   </v-app>
@@ -23,18 +23,18 @@
 
 <script>
 
-import login from './views/Login'
+import register from './views/Register'
 export default {
   name: 'App',
   components: {
-    login
+    register
   },
   data: () => ({
-    isLoginShow: false
+    isRegisterShow: false
   }),
   methods: {
-    showLogin() {
-      this.isLoginShow = !this.isLoginShow;
+    showRegister() {
+      this.isRegisterShow = !this.isRegisterShow;
     }
   }
 };

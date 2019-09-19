@@ -10,11 +10,11 @@ export default {
         return {
             message: 'gytytytyty'
         }
-    },
-    mounted() {
-        this.$axios.get('/api/profiles/test').then(res => {
-            console.log(res)
-        })
     }
+    // mounted() {
+    //     this.$axios.get('/api/profiles/test').then(res => {
+    //         console.log(res)
+    //     })
+    // }
 }
 </script>
