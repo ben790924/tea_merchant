@@ -10,6 +10,7 @@
                     </div>
                     <div class="text-center">
                         <div class="btn btn-success" @click="login">確認</div>
+                        <div class="btn btn-primary float-right">註冊</div>
                     </div>
                 </form>
             </b-col>

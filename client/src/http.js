@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 axios.interceptors.response.use(response => {
-    return response
+  return response
 }, error => {
-    alert(error)
+  alert(error)
 })
 
-export default axios;
+export default axios
