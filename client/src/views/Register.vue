@@ -4,17 +4,17 @@
             <b-row>
                 <b-col lg="6" align-h="center" offset-lg="3">
                     <form>
-                        <p class="h4 text-center mb-4">登入</p>
+                        <p class="h4 text-center mb-4">註冊</p>
                         <div class="grey-text">
-                            <mdb-input label="你的名稱" icon="signature" type="text" v-model="userLogin.name" />
-                            <mdb-input label="你的信箱" icon="envelope" type="email" v-model="userLogin.email"/>
-                            <mdb-input label="你的密碼" icon="lock" type="password" v-model="userLogin.password" />
+                            <mdb-input label="你的名稱" icon="signature" type="text" v-model="userLogin.name" required/>
+                            <mdb-input label="你的信箱" icon="envelope" type="email" v-model="userLogin.email" required/>
+                            <mdb-input label="你的密碼" icon="lock" type="password" v-model="userLogin.password" required />
                         </div>
-                        <div class="text-right" style="transform:translateY(-10px)">
-                            <span class="register-text" @click="toRegister">註冊</span>
+                        <div class="text-right">
+                            <span class="return-text" @click="toLogin">返回</span>
                         </div>
                         <div class="text-center">
-                            <div class="btn btn-success" @click="login">確認</div>
+                            <div class="btn btn-success" @click="register">註冊</div>
                         </div>
                     </form>
                 </b-col>
@@ -25,7 +25,7 @@
 <script>
 import { mdbInput } from 'mdbvue';
 export default {
-    name: 'login',
+    name: 'register',
     components: {
       mdbInput
     },
@@ -39,18 +39,18 @@ export default {
         }
     },
     methods: {
-        login() {
-            this.$axios.post('/api/users/login', this.userLogin).then(res => {
-                console.log(res)
-                if(res.data.success) {
-                    this.$router.push({path: '/'})
+        register() {
+            this.$axios.post('/api/users/register', this.userLogin).then(res => {
+                if(res.data.msg) {
+                    alert(res.data.msg)
                 } else {
-                    alert('輸入不正確或是信箱已註冊')
+                    alert('註冊成功')
+                    this.$router.push('/login')
                 }
             })
         },
-        toRegister() {
-            this.$router.push('/register')
+        toLogin() {
+            this.$router.push('/login')
         }
     }
 }
@@ -62,7 +62,7 @@ export default {
     display: flex;
     align-items: center;
 }
-.register-text{
+.return-text{
     font-size: 14px;
     color:grey;
     cursor: pointer;

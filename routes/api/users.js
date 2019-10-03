@@ -26,7 +26,7 @@ router.post('/register', (req, res) => {
     User.findOne({email: req.body.email})
         .then(user => {
             if(user) {
-                res.status(400).json({msg: '信箱已註冊過摟!'});
+                res.json({msg: '信箱已註冊過摟!', fail: true});
             } else {
                 const {name, email, password} = req.body;
                 // gravatar
