@@ -3,12 +3,12 @@
         <b-container class="container">
             <b-row>
                 <b-col lg="6" align-h="center" offset-lg="3">
-                    <form>
+                    <form class="was-validated">
                         <p class="h4 text-center mb-4">登入</p>
                         <div class="grey-text">
-                            <mdb-input label="你的名稱" icon="signature" type="text" v-model="userLogin.name" />
-                            <mdb-input label="你的信箱" icon="envelope" type="email" v-model="userLogin.email"/>
-                            <mdb-input label="你的密碼" icon="lock" type="password" v-model="userLogin.password" />
+                            <mdb-input label="你的名稱" icon="signature" type="text" v-model="userLogin.name" required invalidFeedback="未輸入名稱"/>
+                            <mdb-input label="你的信箱" icon="envelope" type="email" v-model="userLogin.email" required invalidFeedback="未輸入信箱"/>
+                            <mdb-input label="你的密碼" icon="lock" type="password" v-model="userLogin.password" required invalidFeedback="未輸入密碼"/>
                         </div>
                         <div class="text-right" style="transform:translateY(-10px)">
                             <span class="register-text" @click="toRegister">註冊</span>
@@ -40,14 +40,19 @@ export default {
     },
     methods: {
         login() {
-            this.$axios.post('/api/users/login', this.userLogin).then(res => {
-                console.log(res)
-                if(res.data.success) {
-                    this.$router.push({path: '/'})
-                } else {
-                    alert('輸入不正確或是信箱已註冊')
-                }
-            })
+            const {email, password, name} = this.userLogin
+            if(email && password && name) {
+                this.$axios.post('/api/users/login', this.userLogin).then(res => {
+                    console.log(res)
+                    if(res.data.success) {
+                        this.$router.push({path: '/'})
+                    } else {
+                        alert('輸入不正確或是信箱已註冊')
+                    }
+                })
+            } else {
+                alert('資料不正確')
+            }
         },
         toRegister() {
             this.$router.push('/register')
