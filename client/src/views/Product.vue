@@ -26,54 +26,26 @@
             </b-row>
             <!-- 收尋 -->
             <b-row>
-                <div class="input-group">
-                    <b-form-input type="text" class="input-search" placeholder="收尋產品"></b-form-input>
-                    <div class="input-comfirm">
-                        <i class="fas fa-search"></i>
+                <b-col>
+                    <div class="input-group">
+                        <b-form-input type="text" class="input-search" placeholder="收尋產品" v-model="filterText"></b-form-input>
+                        <div class="input-comfirm">
+                            <i class="fas fa-search"></i>
+                        </div>
                     </div>
-                </div>
+                </b-col>
             </b-row>
             <!-- 產品 -->
             <b-row>
-                <b-col sm="6" xs="12" md="3">
+                <b-col sm="6" xs="12" md="3" v-for="item in filterProducts" :key="item.id">
                     <div class="products">
                         <div class="products-img img-fluid"></div>
                         <div class="products-body">
-                            <div class="products-body-title">西方帥哥茶</div>
+                            <div class="products-body-title">{{ item.title }}</div>
                             <star :fullColorNum='3' :halfColor="true" />                    
-                            <div class="products-body-fee">$4000</div>
+                            <div class="products-body-fee">{{item.fee}}</div>
                         </div>
                     </div>
-                </b-col>
-                <b-col sm="6" xs="12" md="3">
-                    <div class="products">
-                        <div class="products-img img-fluid"></div>
-                        <div class="products-body">
-                            <div class="products-body-title">西方帥哥茶</div>
-                            <star :fullColorNum='5' :halfColor="false" />                    
-                            <div class="products-body-fee">$4000</div>
-                        </div>
-                    </div>  
-                </b-col>
-                <b-col sm="6" xs="12" md="3">
-                    <div class="products">
-                        <div class="products-img img-fluid"></div>
-                        <div class="products-body">
-                            <div class="products-body-title">西方帥哥茶</div>
-                            <star :fullColorNum='1' :halfColor="true" />                    
-                            <div class="products-body-fee">$4000</div>
-                        </div>
-                    </div>  
-                </b-col>
-                <b-col sm="6" xs="12" md="3">
-                    <div class="products">
-                        <div class="products-img img-fluid"></div>
-                        <div class="products-body">
-                            <div class="products-body-title">棒槌茶</div>
-                            <star :fullColorNum='2' :halfColor="false" />                    
-                            <div class="products-body-fee">$4000</div>
-                        </div>
-                    </div>  
                 </b-col>
             </b-row>
         </b-container>
@@ -96,9 +68,23 @@ export default {
                     text: '產品',
                     to: {name: 'product'}
                 }
-            ]
+            ],
+            products: [],
+            filterText: ''
         }
-    }
+    },
+    computed: {
+        filterProducts() {
+            return this.products.filter(i => {
+                return i.title.includes(this.filterText)
+            })
+        }
+    },
+    created() {
+        this.$axios.get('api/products/getProduct').then(res => {
+            this.products = res.data
+        })
+  }
 }
 </script>
 
@@ -155,7 +141,6 @@ export default {
     width: 250px;
     margin: 30px 0;
     position: relative;
-    margin-left: 30px;
     .input-comfirm{
         position: absolute;
         right: 0px;
@@ -176,6 +161,8 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 20px 0 10px 0;
+    cursor: pointer;
     .products-img{
         background-image: url('../assets/carousel-tea.jpg');
         background-position: center center;
@@ -198,6 +185,9 @@ export default {
             color: #8A8A8A;
             margin-top: 6px;
         }
+    }
+    &:hover{
+        background-color: #f3f3f3;
     }
 }
 </style>

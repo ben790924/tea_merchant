@@ -24,13 +24,13 @@
     <!-- 熱門產品 -->
     <div class="hot-product-text">熱門產品</div>
     <carousel :autoplay="false" :autoplayHoverPause="true" :perPageCustom="perPageCustom" style="cursor:pointer">
-      <slide v-for="item in hotProducts" :key="item.key" class="slide">
+      <slide v-for="item in filterHotProducts" :key="item.key" class="slide">
         <img class="carousel-img" src="../assets/carousel-tea.jpg" alt="" height="100%" width="100%">
         <span class="tea-title">{{ item.title }}</span>
         <span class="tea-fee">${{ item.fee }}</span>
         <span class="tea-description">{{ item.description }}</span>
         <div class="tea-add-btn">加入購物車</div>
-        <div class="hot-label" v-if="item.hot">熱門</div>
+        <div class="hot-label" v-if="item.hot">熱銷</div>
       </slide>
     </carousel>
   </div>
@@ -74,7 +74,12 @@ export default {
   computed: {
     ...mapState({
       msg: state => state.tryVuex.msg
-    })
+    }),
+    filterHotProducts() {
+      return this.hotProducts.filter(i => {
+        return i.hot
+      })
+    }
   },
   methods: {
     onSlideStart(slide) {
