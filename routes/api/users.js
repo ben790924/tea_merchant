@@ -70,6 +70,9 @@ router.post('/login', (req, res) => {
                     const rule = {id: user.id, name: user.name, avatar: user.avatar}
                     jwt.sign(rule, keys.secretKey, {expiresIn: 3600}, (err, token) => {
                         if(err) throw err;
+                        if(!req.cookies.sid) {
+                            res.cookie('sid', token)
+                        }
                         res.json({
                             success: true,
                             token: 'Bearer ' + token
@@ -96,5 +99,17 @@ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res
         avatar: req.user.avatar
     })
 })
+
+/* 
+    $route  GET api/users/check
+    @desc   返回 
+    @access public
+*/
+router.get('/check', (req, res, next) => {
+    if(req.cookies.sid) {
+        res.json(req.cookies.sid)
+    }
+})
+
 
 module.exports = router;

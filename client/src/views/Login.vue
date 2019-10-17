@@ -45,7 +45,6 @@ export default {
                 this.$axios.post('/api/users/login', this.userLogin).then(res => {
                     console.log(res)
                     if(res.data.success) {
-                        localStorage.setItem('token', res.data.token)
                         this.$router.push({path: '/'})
                     } else {
                         alert('輸入不正確或是信箱已註冊')

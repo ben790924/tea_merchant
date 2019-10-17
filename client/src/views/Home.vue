@@ -93,6 +93,10 @@ export default {
     this.$axios.get('api/products/getProduct').then(res => {
       this.hotProducts = res.data
     })
+    this.$axios.get('api/cookie').then(res => {
+      console.log('餅乾在此', res)
+    })
+    
   }
 }
 </script>
