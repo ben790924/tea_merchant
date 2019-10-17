@@ -8,7 +8,7 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item href="#">商品</b-nav-item>
+            <b-nav-item href="/product">商品</b-nav-item>
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto"> 
@@ -31,5 +31,6 @@
 <style lang="scss" scoped>
 #app{
   min-height: 100vh;
+  font-family: '微軟正黑體';
 }
 </style>

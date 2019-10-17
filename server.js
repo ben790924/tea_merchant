@@ -10,6 +10,7 @@ app.use(bodyParser.json())
 // routes
 const users = require('./routes/api/users')
 const profiles = require('./routes/api/profiles')
+const products = require('./routes/api/products')
 //connect db
 const db = require('./config/keys.js').mongoURI
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -26,6 +27,7 @@ require('./config/passport')(passport)
 // 登入頁面
 app.use('/api/users', users) // 訪問 固定的api/users/xxx, xxx代表 users.js 裡面的接口名
 app.use('/api/profiles', profiles) 
+app.use('/api/products', products)
 
 const PORT = process.env.PORT || 5000;
 

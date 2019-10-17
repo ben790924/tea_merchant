@@ -29,6 +29,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: () => import('./views/Register.vue')
+    },
+    {
+      path: '/product',
+      name: 'product',
+      component: () => import('./views/Product.vue')
     }
   ]
 })

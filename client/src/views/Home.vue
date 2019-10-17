@@ -24,12 +24,13 @@
     <!-- 熱門產品 -->
     <div class="hot-product-text">熱門產品</div>
     <carousel :autoplay="false" :autoplayHoverPause="true" :perPageCustom="perPageCustom" style="cursor:pointer">
-      <slide v-for="item in 6" :key="item.key" class="slide">
+      <slide v-for="item in hotProducts" :key="item.key" class="slide">
         <img class="carousel-img" src="../assets/carousel-tea.jpg" alt="" height="100%" width="100%">
-        <span class="tea-title">高山茶</span>
-        <span class="tea-fee">$800</span>
-        <span class="tea-description">阿里山獨特的氣候和地理環境，使得這裡出產的高山茶葉品質很優良。平生長在海拔1000米以上的低溫山坡地，常年雲霧繚繞，水氣充沛，日照豐富茶種以烏龍、金為主。其茶不僅質地香純，入口甘甜潤醇且耐泡</span>
+        <span class="tea-title">{{ item.title }}</span>
+        <span class="tea-fee">${{ item.fee }}</span>
+        <span class="tea-description">{{ item.description }}</span>
         <div class="tea-add-btn">加入購物車</div>
+        <div class="hot-label" v-if="item.hot">熱門</div>
       </slide>
     </carousel>
   </div>
@@ -66,7 +67,8 @@ export default {
       sliding: null,
       perPageCustom: [
         [1024, 4], [768, 3],[512, 2]
-      ]
+      ],
+      hotProducts: []
     }
   },
   computed: {
@@ -81,6 +83,11 @@ export default {
     onSlideEnd(slide) {
       this.sliding = false
     }
+  },
+  created() {
+    this.$axios.get('api/products/getProduct').then(res => {
+      this.hotProducts = res.data
+    })
   }
 }
 </script>
@@ -143,6 +150,21 @@ export default {
   line-height: 50px;
   border-radius: 5px;
   cursor: pointer;
+}
+.hot-label{
+  width: 69px;
+  height: 26px;
+  position: absolute;
+  background-color: #eb0000;
+  color: #fff;
+  left: 0px;
+  top: 28px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 26px;
+  border-radius: 5px;
+  transform: rotate(-36deg);
 }
 @keyframes upsideDown{
   from{
