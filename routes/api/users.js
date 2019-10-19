@@ -68,7 +68,7 @@ router.post('/login', (req, res) => {
             .then(isMatch => {
                 if(isMatch) {
                     const rule = {id: user.id, name: user.name, avatar: user.avatar}
-                    jwt.sign(rule, keys.secretKey, {expiresIn: 3600}, (err, token) => {
+                    jwt.sign(rule, keys.secretKey, {expiresIn: '12h'}, (err, token) => {
                         if(err) throw err;
                         if(!req.cookies.sid) {
                             res.cookie('sid', token)
@@ -88,7 +88,7 @@ router.post('/login', (req, res) => {
 
 /* 
     $route  GET api/users/current
-    @desc   返回 current user
+    @desc   返回 current user (用戶資訊)
     @access private
 */
 router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {

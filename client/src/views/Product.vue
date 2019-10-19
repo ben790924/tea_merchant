@@ -1,6 +1,8 @@
 <template>
     <div>
         <b-container fluid>
+        <PreviewModal :modalContent="modalContent" :isShow="isShow" @modalShow="triggerModal" />
+
             <!-- 大促銷 -->
             <b-row align-h="center">
                 <div class="push-notification">
@@ -45,18 +47,23 @@
                             <star :fullColorNum='3' :halfColor="true" />                    
                             <div class="products-body-fee">{{item.fee}}</div>
                         </div>
+                        <div class="products-preview" @click="openPreviewModal(item)">
+                            詳細資訊
+                        </div>
                     </div>
                 </b-col>
             </b-row>
         </b-container>
+        <!-- <b-modal id="products-preview-modal">modal</b-modal> -->
     </div>
 </template>
 <script>
 import star from '../components/Star'
+import PreviewModal from '../components/PreviewModal'
 import {Input} from 'vue-carousel'
 export default {
     name: 'product',
-    components: { star },
+    components: { star, PreviewModal },
     data() {
         return {
             items: [
@@ -70,7 +77,18 @@ export default {
                 }
             ],
             products: [],
-            filterText: ''
+            filterText: '',
+            modalContent: {},
+            isShow: false
+        }
+    },
+    methods: {
+        openPreviewModal(item) {
+            this.isShow = !this.isShow;
+            this.modalContent = item;
+        },
+        triggerModal() {
+            this.isShow = !this.isShow;
         }
     },
     computed: {
@@ -157,6 +175,7 @@ export default {
 .products{
     width: 100%;
     height: 100%;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -188,6 +207,25 @@ export default {
     }
     &:hover{
         background-color: #f3f3f3;
+        .products-preview{
+            display: block;
+        }
+    }
+    .products-preview{
+        width: 270px;
+        height: 50px;
+        background-color: #00B38F;
+        text-align: center;
+        line-height: 50px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #FFFFFF;
+        font-weight: 600;
+        letter-spacing: 2px;
+        left: calc(50% - 135px);
+        top: 60%;
+        display: none;
     }
 }
 </style>

@@ -15,6 +15,8 @@ import 'es6-promise/auto'
 import Vuex from 'vuex'
 import store from './store/index'
 import VueCarousel from 'vue-carousel'
+import currencyFilter from '../src/filter/currency'
+Vue.filter('currency', currencyFilter)
 Vue.use(VueCarousel)
 Vue.use(Vuex)
 Vue.prototype.$axios = axios
