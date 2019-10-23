@@ -13,6 +13,9 @@
 
           <b-navbar-nav class="ml-auto"> 
             <b-navbar-nav right>
+              <b-nav-item>
+                <Cart />
+              </b-nav-item>
               <b-nav-item @click="$router.push('/login')">登入</b-nav-item>
               <b-nav-item @click="$router.push('/register')">註冊</b-nav-item>
             </b-navbar-nav>
@@ -27,7 +30,14 @@
     <router-view/>
   </div>
 </template>
-
+<script>
+import Cart from './components/Cart'
+export default {
+  components: {
+    Cart
+  }
+}
+</script>
 <style lang="scss" scoped>
 #app{
   min-height: 100vh;

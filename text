@@ -1,4 +1,12 @@
-https://picsum.photos/300/100/
+登入後才能放入購物車(先跳出警告視窗 給予選項是否登入)> 將加入的產品標上session > /getCart ssession一樣的抓出
+
+購物車內容先放到localStorage> 購買時才需要加入session> 加入session的購物車存入到資料庫
 
 
-購物車: 1. 寫好UI 2. 
+購物車使用元件就好，不要用view
+
+顯示的時候用內部data  保留用ls
+
+
+
+TODO: 寫跳出Cart的Modal

@@ -15,5 +15,19 @@ router.post('/cart', (req, res) => {
         res.json({'錯誤': err})
     })
 })
+router.get('/getCart/:id', (req, res) => {
+    Cart.find({}).then(cart => {
+        // let filterCart = cart.filter(item => {
+        //     return item._id === req.params.id
+        // })
+        let myCart = cart.map(res => {
+            console.log(res._id);
+            
+        })
+        res.json(cart)
+    })
+})
+
+
 
 module.exports = router;

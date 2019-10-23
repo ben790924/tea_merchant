@@ -70,12 +70,9 @@ router.post('/login', (req, res) => {
                     const rule = {id: user.id, name: user.name, avatar: user.avatar}
                     jwt.sign(rule, keys.secretKey, {expiresIn: '12h'}, (err, token) => {
                         if(err) throw err;
-                        if(!req.cookies.sid) {
-                            res.cookie('sid', token)
-                        }
                         res.json({
                             success: true,
-                            token: 'Bearer ' + token
+                            token: 'bearer ' + token
                         })
                     })
                 } else {

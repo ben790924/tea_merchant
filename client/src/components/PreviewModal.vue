@@ -48,8 +48,12 @@ export default {
             sizeActive: {
                 size: 0
             },
-            inputQuantity: 1
+            inputQuantity: 1,
+            cartInLocalStorage: []
         }
+    },
+    computed: {
+        
     },
     methods: {
         isModalShow() {
@@ -71,12 +75,15 @@ export default {
                 quantity: this.inputQuantity*1,
                 size: this.sizeActive.size
             }
-            console.log(shopDetail)
-            this.$axios.post('/api/carts/cart', shopDetail,{
-                headers:{'Authorization': `Bearer ${document.cookie.split('=')[1]}`}
-            }).then(res => {
-                console.log('購物車內容', res)
-            })
+            this.$store.commit('cart/setCarts',shopDetail)
+
+            // console.log(`Bearer ${document.cookie.split('=')[1]}`)
+            // this.$axios.post('/api/carts/cart',{
+            //     headers:{'Authorization': `Bearer ${document.cookie.split('=')[1]}`},
+            //     data: shopDetail
+            // }).then(res => {
+            //     console.log('購物車內容', res)
+            // })
         }
     }
     

@@ -33,6 +33,49 @@
         <div class="hot-label" v-if="item.hot">熱銷</div>
       </slide>
     </carousel>
+    <b-container fluid class="footer">
+      <b-row>
+        <b-col>
+          <div class="contact-us">
+            <div class="title">聯絡我們</div>
+            <div class="email">
+              <a href="ben790924@gmail.com">信箱地址</a>
+            </div>
+            <div class="tel">+886 981344218</div>
+            <div class="address">後龍街120號之2</div>
+          </div>
+          
+        </b-col>
+        <b-col>
+          <div class="about-us">
+            <div>關於我們</div>
+          </div>
+        </b-col>
+        <b-col>
+          <div class="direct-buy">
+            <div class="buy-title">直接訂購</div>
+            <b-container>
+              <b-row>
+                <b-col cols="3" align-self="center">
+                  <label for="demand-products" class="demand-products">要買什麼:</label>
+                </b-col>
+                <b-col cols="9">
+                  <b-form-input id="demand-products" class="demand-input"></b-form-input>
+                </b-col>
+              </b-row>
+              <b-row class="my-3">
+                <b-col cols="3" align-self="center">
+                  <label for="demand-email" class="demand-products">輸入信箱:</label>
+                </b-col>
+                <b-col cols="9">
+                  <b-form-input id="demand-email" class="demand-input"></b-form-input>
+                </b-col>
+              </b-row>
+            </b-container>
+          </div>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -93,8 +136,14 @@ export default {
     this.$axios.get('api/products/getProduct').then(res => {
       this.hotProducts = res.data
     })
-    this.$axios.get('api/cookie').then(res => {
-      console.log('餅乾在此', res)
+    const token = localStorage.getItem('token').split('')[1]
+    this.$axios.post('api/localAuth', {'jwt': token}, {
+      headers: {
+        'Authorization': localStorage.getItem('token'),
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(res => {
+      console.log('Auth成功?', res)
     })
     
   }
@@ -174,6 +223,34 @@ export default {
   line-height: 26px;
   border-radius: 5px;
   transform: rotate(-36deg);
+}
+.footer{
+  width: 100%;
+  height: 250px;
+  background-color: rgb(211, 211, 211);
+  padding: 20px;
+  .contact-us,.about-us{
+    div{
+      &:nth-child(1){
+        text-align: center;
+        font-size: 25px;
+        font-weight: 600;
+      }
+    }
+  }
+  .direct-buy{
+    .buy-title{
+      text-align: center;
+      font-size: 25px;
+      font-weight: 600;
+    }
+    .demand-products{
+      margin: 0;
+    }
+    .demand-input{
+
+    }
+  }
 }
 @keyframes upsideDown{
   from{
