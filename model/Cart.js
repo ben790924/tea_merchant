@@ -26,6 +26,9 @@ const CartSchema = new Schema({
         type: Number,
         required: true,
         
+    },
+    userId: {
+        type: String
     }
 })
 

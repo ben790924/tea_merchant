@@ -1,16 +1,16 @@
 <template>
     <div>
-        <div class="cart" @click="intoCart">
+        <div class="cart" @click="getCart">
             <i class="fas fa-shopping-cart"></i>
             <span class="my-cart">購物車</span>
-            <span class="counts" v-if="cartsDetail.length">{{ cartsDetail.length }}</span>
+            <span class="counts" v-if="shoppingCarts.length">{{ shoppingCarts.length }}</span>
         </div>
         <div class="grey-background" @click.self="isModalShow" :class="{'is-modal': isShow}">
             <div class="preview-modal">
-                <div class="no-cart" v-if="!cartsDetail.length">
+                <div class="no-cart" v-if="!shoppingCarts.length">
                     <h1>購物車沒有內容...</h1>
                 </div>
-                <table class="table" v-if="cartsDetail.length">
+                <table class="table" v-if="shoppingCarts.length">
                     <thead>
                         <tr>
                             <th>產品</th>
@@ -21,7 +21,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(i, index) in cartsDetail" :key="i.key">
+                        <tr v-for="(i, index) in shoppingCarts" :key="i.key">
                             <td>
                                 <div class="cart-item">
                                     <div class="cart-image">
@@ -43,7 +43,7 @@
                         
                     </tbody>
                 </table>
-                <b-button class="purchase-button" variant="success" v-if="cartsDetail.length">結帳去</b-button>
+                <b-button class="purchase-button" variant="success" v-if="shoppingCarts.length">結帳去</b-button>
             </div>
         </div>
     </div>
@@ -54,24 +54,25 @@ export default {
     name: 'cart',
     data() {
         return {
-            isShow: true
+            isShow: true,
+            shoppingCarts: []
         }
     },
-    computed: {
-        ...mapState({
-            cartsDetail: state => state.cart.carts
-        })
-    },
+    
     methods: {
-        intoCart() {
-            localStorage.setItem('myCart', JSON.stringify(this.$store.state.cart.carts))
-            this.isShow = !this.isShow;
-        },
+        
         isModalShow() {
             this.isShow = !this.isShow;
         },
         deleteOneCart(index) {
             this.$store.commit('cart/deleteCarts', index);
+        },
+        getCart() {
+            this.isShow =! this.isShow
+            this.$axios.get(`/api/carts/getCart/${localStorage.userId}`).then(res => {
+                console.log('d的購物車內容', res)
+                this.shoppingCarts = res.data
+            })
         }
     }
 }

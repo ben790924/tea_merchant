@@ -27,6 +27,7 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import star from '../components/Star'
 export default {
     name: 'previewModal',
@@ -53,7 +54,9 @@ export default {
         }
     },
     computed: {
-        
+        ...mapState({
+            userInfo: state => state.user.userInfo
+        })
     },
     methods: {
         isModalShow() {
@@ -68,22 +71,18 @@ export default {
         },
         addCart() {
             const { title, fee, img } = this.modalContent;
+            console.log(this.userInfo)
             const shopDetail = {
                 title,
                 fee,
                 img,
                 quantity: this.inputQuantity*1,
-                size: this.sizeActive.size
+                size: this.sizeActive.size,
+                userId: localStorage.userId
             }
-            this.$store.commit('cart/setCarts',shopDetail)
-
-            // console.log(`Bearer ${document.cookie.split('=')[1]}`)
-            // this.$axios.post('/api/carts/cart',{
-            //     headers:{'Authorization': `Bearer ${document.cookie.split('=')[1]}`},
-            //     data: shopDetail
-            // }).then(res => {
-            //     console.log('購物車內容', res)
-            // })
+            this.$axios.post('api/carts/cart', shopDetail).then(res => {
+                console.log('加入購物車的RES', res)
+            })
         }
     }
     

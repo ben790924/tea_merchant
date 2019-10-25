@@ -5,9 +5,9 @@ const passport = require('passport');
 
 
 router.post('/cart', (req, res) => {
-    const {title, fee, img, quantity, size} = req.body;
+    const {title, fee, img, quantity, size, userId} = req.body;
     const shopCart = {
-        title, fee, img, quantity, size
+        title, fee, img, quantity, size, userId
     }
     new Cart(shopCart).save().then(cart => {
         res.json(cart)
@@ -16,14 +16,8 @@ router.post('/cart', (req, res) => {
     })
 })
 router.get('/getCart/:id', (req, res) => {
-    Cart.find({}).then(cart => {
-        // let filterCart = cart.filter(item => {
-        //     return item._id === req.params.id
-        // })
-        let myCart = cart.map(res => {
-            console.log(res._id);
-            
-        })
+    Cart.find({ userId: req.params.id }).then(cart => {
+        console.log('getcart',cart)
         res.json(cart)
     })
 })
