@@ -68,11 +68,14 @@ router.post('/login', (req, res) => {
             .then(isMatch => {
                 if(isMatch) {
                     const rule = {id: user.id, name: user.name, avatar: user.avatar}
+                    
                     jwt.sign(rule, keys.secretKey, {expiresIn: '12h'}, (err, token) => {
                         if(err) throw err;
                         res.json({
                             success: true,
-                            token: 'bearer ' + token
+                            token: 'bearer ' + token,
+                            id: rule.id,
+                            name: rule.name,
                         })
                     })
                 } else {

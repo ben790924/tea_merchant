@@ -93,15 +93,17 @@ export default {
     this.$axios.get('api/products/getProduct').then(res => {
       this.hotProducts = res.data
     })
-    const token = localStorage.getItem('token').split('')[1]
-    this.$axios.post('api/localAuth', {'jwt': token}, {
-      headers: {
-        'Authorization': localStorage.getItem('token'),
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }).then(res => {
-      console.log('Auth成功?', res)
-    })
+    if(localStorage.token) {
+      const token = localStorage.getItem('token').split('')[1]
+      this.$axios.post('api/localAuth', {'jwt': token}, {
+        headers: {
+          'Authorization': localStorage.getItem('token'),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then(res => {
+        console.log('Auth成功?', res)
+      })
+    }
     
   }
 }

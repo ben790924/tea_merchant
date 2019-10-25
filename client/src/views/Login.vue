@@ -44,6 +44,7 @@ export default {
             if(email && password && name) {
                 this.$axios.post('/api/users/login', this.userLogin).then(res => {
                     console.log(res)
+                    this.$store.commit('user/saveUser', res.data)
                     localStorage.setItem('token', res.data.token)
                     if(res.data.success) {
                         this.$router.push({path: '/'})
