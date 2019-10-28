@@ -5,8 +5,10 @@
 
 購物車使用元件就好，不要用view
 
-顯示的時候用內部data  保留用ls
 
-
-
-TODO: 寫跳出Cart的Modal
+TODO : 
+1. 登入後登入按鈕要隱蔽 ok
+2. 登入後不能再進入登入畫面(beforeEach)
+3. profile的頁面(包含頭像功能)
+4. 登出功能 ok
+5. 後臺系統>使用者schema要有isAdmin

@@ -21,9 +21,10 @@
                 <div class="right-content-quantity">
                     <b-form-input type="number" size="sm" v-model="inputQuantity" :formatter="formatInput" placeholder="1" class="right-content-quantity-b-input the-same"></b-form-input> &nbsp;&nbsp;包
                 </div>
-                <div class="right-content-button the-same" @click="addCart">加入購物車</div>
+                <div class="right-content-button the-same" @click="addCart" id="tooltip-target">加入購物車</div>
             </div>
         </div>
+        <b-tooltip :show.sync="showTooltip" target="tooltip-target" triggers="click" variant="success">已加入購物車</b-tooltip>
     </div>
 </template>
 <script>
@@ -50,13 +51,14 @@ export default {
                 size: 0
             },
             inputQuantity: 1,
-            cartInLocalStorage: []
+            cartInLocalStorage: [],
+            showTooltip: false
         }
     },
     computed: {
-        ...mapState({
-            userInfo: state => state.user.userInfo
-        })
+        // ...mapState({
+        //     userInfo: state => state.user.userInfo
+        // })
     },
     methods: {
         isModalShow() {
@@ -70,19 +72,25 @@ export default {
             }
         },
         addCart() {
-            const { title, fee, img } = this.modalContent;
-            console.log(this.userInfo)
-            const shopDetail = {
-                title,
-                fee,
-                img,
-                quantity: this.inputQuantity*1,
-                size: this.sizeActive.size,
-                userId: localStorage.userId
+            if(localStorage.userId) {
+                const { title, fee, img } = this.modalContent;
+                const shopDetail = {
+                    title,
+                    fee,
+                    img,
+                    quantity: this.inputQuantity*1,
+                    size: this.sizeActive.size,
+                    userId: localStorage.userId
+                }
+                this.$axios.post('api/carts/cart', shopDetail).then(res => {
+                    console.log('加入購物車的RES', res)
+                    if(res.data.title) {
+                        this.showTooltip = true
+                    }
+                })
+            } else {
+                alert('未登錄無法使用購物車')
             }
-            this.$axios.post('api/carts/cart', shopDetail).then(res => {
-                console.log('加入購物車的RES', res)
-            })
         }
     }
     

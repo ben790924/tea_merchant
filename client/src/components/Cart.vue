@@ -3,7 +3,7 @@
         <div class="cart" @click="getCart">
             <i class="fas fa-shopping-cart"></i>
             <span class="my-cart">購物車</span>
-            <span class="counts" v-if="shoppingCarts.length">{{ shoppingCarts.length }}</span>
+            <!-- <span class="counts" v-if="shoppingCarts.length">{{ shoppingCarts.length }}</span> -->
         </div>
         <div class="grey-background" @click.self="isModalShow" :class="{'is-modal': isShow}">
             <div class="preview-modal">
@@ -21,7 +21,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(i, index) in shoppingCarts" :key="i.key">
+                        <tr v-for="i in shoppingCarts" :key="i.key">
                             <td>
                                 <div class="cart-item">
                                     <div class="cart-image">
@@ -33,14 +33,13 @@
                                 </div>
                             </td>
                             <td>{{ i.fee | currency }}</td>
-                            <td>{{ i.quantity }}</td>
-                            <td>{{ i.size }}</td>
+                            <td>{{ i.quantity}}</td>
+                            <td>{{ i.size | transformSize}}</td>
                             <td>{{ i.fee*i.quantity | currency }}</td>
-                                <div class="delete-btn" variant="danger" size="sm" style="padding:5px 3px;" @click="deleteOneCart(index)">
+                                <div class="delete-btn" variant="danger" size="sm" style="padding:5px 3px;" @click="deleteOneCart(i._id)">
                                     <i class="fas fa-minus-circle" style="font-size:25px"></i>
                                 </div>
                         </tr>
-                        
                     </tbody>
                 </table>
                 <b-button class="purchase-button" variant="success" v-if="shoppingCarts.length">結帳去</b-button>
@@ -64,15 +63,34 @@ export default {
         isModalShow() {
             this.isShow = !this.isShow;
         },
-        deleteOneCart(index) {
-            this.$store.commit('cart/deleteCarts', index);
-        },
-        getCart() {
-            this.isShow =! this.isShow
-            this.$axios.get(`/api/carts/getCart/${localStorage.userId}`).then(res => {
-                console.log('d的購物車內容', res)
-                this.shoppingCarts = res.data
+        deleteOneCart(itemId) {
+            this.$axios.delete(`/api/carts/deleteCart/${itemId}`).then(res => {
+                if(res.data.success) {
+                    console.log('刪除成功')
+                    this.getCart(false)
+                }
             })
+        },
+        getCart(enableShow=true) {
+            if(enableShow) {
+                this.isShow =! this.isShow
+            }
+            const isUserId = localStorage.userId ? true : false;
+            if(isUserId) {
+                this.$axios.get(`/api/carts/getCart/${localStorage.userId}`).then(res => {
+                    console.log('d的購物車內容', res)
+                    this.shoppingCarts = res.data
+                })
+            }
+        }
+    },
+    filters: {
+        transformSize(v) {
+            if(v === 0) {
+                return '半斤'
+            } else if(v === 1) {
+                return '一斤'
+            }
         }
     }
 }

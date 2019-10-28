@@ -43,14 +43,15 @@ export default {
             const {email, password, name} = this.userLogin
             if(email && password && name) {
                 this.$axios.post('/api/users/login', this.userLogin).then(res => {
-                    console.log(res)
-                    // this.$store.commit('user/saveUser', res.data)
-                    
-                    localStorage.setItem('userId', res.data.id)
-                    if(res.data.success) {
-                        this.$router.push({path: '/'})
-                    } else {
-                        alert('輸入不正確或是信箱已註冊')
+                    if(res) {
+                        console.log('登入成功', res)
+                        localStorage.setItem('userId', res.data.id)
+                        this.$store.commit('user/switchIsUserId', true) //logout時也要叫這支
+                        if(res.data.success) {
+                            this.$router.push({path: '/'})
+                        } else {
+                            alert('輸入不正確或是信箱已註冊')
+                        }
                     }
                 })
             } else {

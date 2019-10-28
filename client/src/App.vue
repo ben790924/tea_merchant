@@ -16,8 +16,22 @@
               <b-nav-item>
                 <Cart />
               </b-nav-item>
-              <b-nav-item @click="$router.push('/login')">登入</b-nav-item>
-              <b-nav-item @click="$router.push('/register')">註冊</b-nav-item>
+              <b-nav-item @click="$router.push('/login')" v-if="!isUserId">
+                <i class="fas fa-user-circle"></i>
+                <span>登入</span>
+              </b-nav-item>
+              <b-nav-item @click="$router.push('/profile')" v-if="isUserId">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>個人資訊</span>
+              </b-nav-item>
+              <b-nav-item @click="$router.push('/register')" v-if="!isUserId">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>註冊</span>
+              </b-nav-item>
+              <b-nav-item @click="logOut" v-if="isUserId">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>登出</span>
+              </b-nav-item>
             </b-navbar-nav>
           </b-navbar-nav>
         </b-collapse>
@@ -70,6 +84,49 @@ import Cart from './components/Cart'
 export default {
   components: {
     Cart
+  },
+  data() {
+    return {
+      
+    }
+  },
+  methods: {
+    isLoginStatus() {
+      const isId = localStorage.userId
+      if(isId) {
+        this.$store.commit('user/switchIsUserId', true)
+      }
+    },
+    logOut() {
+      this.$bvModal.msgBoxConfirm('確定要登出嗎 ?', {
+          // title: '登出視窗',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'YES',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        }).then(value => {
+          if(value) {
+            // 確定登出>清除ls
+            localStorage.userId = ''
+            this.$store.commit('user/switchIsUserId', false)
+            this.$router.push('/login')
+          } else {
+            return
+          }
+        })
+    }
+  },
+  computed: {
+    isUserId() {
+      return this.$store.state.user.isUserId
+    }
+  },
+  mounted() {
+    this.isLoginStatus()
   }
 }
 </script>
