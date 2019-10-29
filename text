@@ -11,4 +11,6 @@ TODO :
 2. 登入後不能再進入登入畫面(beforeEach) ok
 3. profile的頁面(包含頭像功能)
 4. 登出功能 ok
-5. 後臺系統>使用者schema要有isAdmin
+5. 後臺系統>使用者schema要有isAdmin ok
+
+6. 註冊要使用component轉換 > 先是信箱跟密碼填寫完成驗證OK後 > 填寫個人資料 > 註冊

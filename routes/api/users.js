@@ -10,16 +10,31 @@ const passport = require('passport');
 const router = express.Router();
 
 /* 
-    $route  GET api/users/test
-    @desc   返回json數據
+    $route  GET api/users/populateUser
+    @desc   測試user內是否有profile
     @access public
 */
 router.get('/populateUser', (req, res) => {
-  User.find({name: 'z'}).populate('profiles').exec((err, profiles) => {
+  User.find({email: 'w@w'}).populate('profiles').exec((err, profiles) => {
       res.json(profiles)
   })
 })
 
+/* 
+    $route  POST api/users/emailValid
+    @desc   驗證是否有email
+    @access public
+*/
+router.post('/emailValid', (req, res) => {
+    const { email } = req.body
+    User.findOne({ email }).then(email => {
+        if(email) {
+            res.json({success: false, msg: '信箱已註冊過'})
+        } else {
+            res.json({success: true})
+        }
+    })
+})
 /* 
     $route  POST api/users/register
     @desc   返回json數據
@@ -38,8 +53,7 @@ router.post('/register', (req, res) => {
 
                 const newUser = new User({
                     email,
-                    password,
-                    isAdmin
+                    password
                 });
                 const newProfile = new Profile({
                     avatar,
@@ -56,7 +70,7 @@ router.post('/register', (req, res) => {
                         newUser.password = hash;
                         newUser.save()
                             .then(user => {
-                                res.json(user);
+                                res.json({data: user, finalSuccess: true, success: true});
                             })
                             .catch(err => {console.log(err);})
                     });
