@@ -15,7 +15,7 @@ const router = new Router({
     {
       path: '/home',
       name: 'home',
-      component: () => import(/* webpackChunkName: "about" */ './views/Home.vue')
+      component: () => import('./views/Home.vue')
     },
     {
       path: '/login',
@@ -40,13 +40,13 @@ const router = new Router({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   const isLogin = localStorage.token ? true : false
-//   if (to.path === '/login') {
-//     isLogin ? next('/') : next()
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  const isLogin = localStorage.userId ? true : false
+  if (to.path === '/login') {
+    isLogin ? next('/home') : next()
+  } else {
+    next()
+  }
+})
 
 export default router

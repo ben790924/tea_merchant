@@ -2,29 +2,27 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ProfileSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
-    },
-    img: {
-        type: String,
-        required: true
-    },
-    imgs: {
-        type: [String],
-        required: true
+    avatar: {
+        type: String
     },
     name: {
         type: String,
         required: true
     },
-    text: {
-        type: String,
-        required: true
+    message: {
+        type: String
     },
     date: {
         type: Date,
         default: Date.now()
+    },
+    telephone: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
     }
 })
 

@@ -1,5 +1,7 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const User = require('../../model/User');
+const Profile = require('../../model/Profile');
 const bcrypt = require('bcrypt');
 const gravatar = require('gravatar');
 const jwt = require('jsonwebtoken');
@@ -12,8 +14,10 @@ const router = express.Router();
     @desc   返回json數據
     @access public
 */
-router.get('/test', (req, res) => {
-    res.json('router works ---');
+router.get('/populateUser', (req, res) => {
+  User.find({name: 'z'}).populate('profiles').exec((err, profiles) => {
+      res.json(profiles)
+  })
 })
 
 /* 
@@ -28,16 +32,24 @@ router.post('/register', (req, res) => {
             if(user) {
                 res.json({msg: '信箱已註冊過摟!', fail: true});
             } else {
-                const {name, email, password} = req.body;
+                const {name, email, password, message, telephone, address} = req.body;
                 // gravatar
                 const avatar = gravatar.url(email, {s: '200', r: 'pg', d: 'mm'});
 
                 const newUser = new User({
-                    name,
                     email,
                     password,
-                    avatar
+                    isAdmin
                 });
+                const newProfile = new Profile({
+                    avatar,
+                    name,
+                    message,
+                    telephone,
+                    address
+                })
+                newProfile.save()
+                newUser.profiles.push(newProfile)
                 bcrypt.genSalt(10, (err, salt) => {
                     bcrypt.hash(newUser.password, salt, (err, hash) => {
                         if(err) throw err;

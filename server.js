@@ -36,13 +36,15 @@ passport.serializeUser(function (user, done) {
 app.use(passport.initialize())
 require('./config/passport')(passport)
 
-// 測試
+// 測試專區
 app.post('/api/localAuth', passport.authenticate('jwt', {session: false}), (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*")
     res.setHeader("Access-Control-Allow-Credentials", "true")
     console.log('req.session', req.body)
     res.json({success: true})
 })
+//測試專區
+
 app.use('/api/users', users) // 訪問 固定的api/users/xxx, xxx代表 users.js 裡面的接口名
 app.use('/api/profiles', profiles) 
 app.use('/api/products', products)
