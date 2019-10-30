@@ -79,7 +79,7 @@ export default {
                     if(res.data.success) {
                         this.transitionSwap = emailOnly ? transitionNum : 1
                         if(res.data.finalSuccess) {
-                            this.$router.push('/home')
+                            this.$router.push('/login')
                         }
                     } else {
                         alert(res.data.msg)

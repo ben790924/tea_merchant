@@ -15,11 +15,21 @@ const router = express.Router();
     @access public
 */
 router.get('/populateUser/:_id', (req, res) => {
-  User.find({_id: new mongoose.Types.ObjectId(req.params._id)}).select('profiles email').populate('profiles').exec((err, profiles) => {
+  User.find({_id: new mongoose.Types.ObjectId(req.params._id)}).populate('profiles').exec((err, profiles) => {
       res.json(profiles)
   })
 })
-
+/* 
+    $route  PUT api/users/updateUser/:filterId
+    @desc   使用者想更新profile的接口
+    @access public
+*/
+router.put('/updateUser/:filterId', (req, res) => {
+    Profile.findOneAndUpdate({_id: new mongoose.Types.ObjectId(req.params.filterId)}, req.body, {new: true})
+    .then(profile => {
+        res.json({profile, success: true})
+    })
+})
 /* 
     $route  POST api/users/emailValid
     @desc   驗證是否有email

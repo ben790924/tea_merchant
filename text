@@ -9,7 +9,7 @@
 TODO : 
 1. 登入後登入按鈕要隱蔽 ok
 2. 登入後不能再進入登入畫面(beforeEach) ok
-3. profile的頁面(包含頭像功能)
+3. profile的頁面(包含頭像功能) > 還要可以更改
 4. 登出功能 ok
 5. 後臺系統>使用者schema要有isAdmin ok
 
@@ -17,7 +17,7 @@ TODO :
 
 7. 製作後台系統 > isAdmin 從資料庫修改 true
 8. 研究paypal API
-
+9. 首頁放上茶種介紹、加工過程、怎麼泡茶
 REMIND :
 
 1. User.profile 是陣列，可用來填充使用者備用的連絡資訊
