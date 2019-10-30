@@ -6,7 +6,6 @@
                     <form class="was-validated">
                         <p class="h4 text-center mb-4">登入</p>
                         <div class="grey-text">
-                            <mdb-input label="你的名稱" icon="signature" type="text" v-model="userLogin.name" required invalidFeedback="未輸入名稱"/>
                             <mdb-input label="你的信箱" icon="envelope" type="email" v-model="userLogin.email" required invalidFeedback="未輸入信箱"/>
                             <mdb-input label="你的密碼" icon="lock" type="password" v-model="userLogin.password" required invalidFeedback="未輸入密碼"/>
                         </div>
@@ -33,15 +32,14 @@ export default {
         return {
             userLogin: {
                 email: '',
-                password: '',
-                name: ''
+                password: ''
             }
         }
     },
     methods: {
         login() {
-            const {email, password, name} = this.userLogin
-            if(email && password && name) {
+            const {email, password} = this.userLogin
+            if(email && password) {
                 this.$axios.post('/api/users/login', this.userLogin).then(res => {
                     if(res) {
                         console.log('登入成功', res)

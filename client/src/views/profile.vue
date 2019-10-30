@@ -10,16 +10,17 @@
                 <!-- 頭像 -->
                 <b-col md="2" sm="2">
                     <div class="image">
-                        <b-img src="https://via.placeholder.com/150" fluid alt=""></b-img>
+                        <b-img :src="profiles.avatar" fluid alt=""></b-img>
                     </div>
                 </b-col>
                 <!-- 資訊 -->
                 <b-col md="4" sm="10">
                     <div class="info">
-                        <div class="name"><span>姓名:</span>棒槌</div>
-                        <div class="email"><span>信箱:</span>bontrua@w.wcom</div>
-                        <div class="text"><span>留言:</span>我是孟儒，外號叫棒槌，雞雞短</div>
-                        <div class="createTime"><span>創建日期:</span>2019/05/04</div>
+                        <div class="name"><span>姓名:</span>{{ profiles.name }}</div>
+                        <div class="email"><span>信箱:</span>{{ email }}</div>
+                        <div class="telephone"><span>電話號碼: </span>{{ profiles.telephone }}</div>
+                        <div class="text"><span>留言:</span>{{ profiles.message }}</div>
+                        <div class="createTime"><span>創建日期:</span>{{ profiles.date }}</div>
                     </div>
                 </b-col>
                 <!-- 購物車內容 -->
@@ -45,8 +46,22 @@ export default {
                     text: '個人資訊',
                     to: {name: 'profile'}
                 }
-            ]
+            ],
+            profiles: {},
+            email: ''
         }
+    },
+    methods: {
+        getProfile() {
+            this.$axios.get(`api/users/populateUser/${localStorage.userId}`).then(res => {
+                console.log(res)
+                this.profiles = res.data[0].profiles[0];
+                this.email = res.data[0].email
+            })
+        }
+    },
+    created() {
+        this.getProfile()
     }
 }
 </script>

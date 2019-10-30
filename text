@@ -13,4 +13,11 @@ TODO :
 4. 登出功能 ok
 5. 後臺系統>使用者schema要有isAdmin ok
 
-6. 註冊要使用component轉換 > 先是信箱跟密碼填寫完成驗證OK後 > 填寫個人資料 > 註冊
+6. 註冊要使用component轉換 > 先是信箱跟密碼填寫完成驗證OK後 > 填寫個人資料 > 註冊 ok
+
+7. 製作後台系統 > isAdmin 從資料庫修改 true
+8. 研究paypal API
+
+REMIND :
+
+1. User.profile 是陣列，可用來填充使用者備用的連絡資訊

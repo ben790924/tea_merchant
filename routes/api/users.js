@@ -11,11 +11,11 @@ const router = express.Router();
 
 /* 
     $route  GET api/users/populateUser
-    @desc   測試user內是否有profile
+    @desc   透過 USER 的 objectId 收尋到 User 的個人資訊
     @access public
 */
-router.get('/populateUser', (req, res) => {
-  User.find({email: 'w@w'}).populate('profiles').exec((err, profiles) => {
+router.get('/populateUser/:_id', (req, res) => {
+  User.find({_id: new mongoose.Types.ObjectId(req.params._id)}).select('profiles email').populate('profiles').exec((err, profiles) => {
       res.json(profiles)
   })
 })
