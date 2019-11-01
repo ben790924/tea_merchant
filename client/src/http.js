@@ -18,6 +18,8 @@ axios.interceptors.response.use(response => {
     deleteCookie('sid')
     alert('Token過期，重新登入')
     router.push('/login')
+  } else if (status === 413) {
+    alert('檔案過大')
   }
   alert(error)
 })

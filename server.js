@@ -15,7 +15,7 @@ const products = require('./routes/api/products')
 const carts = require('./routes/api/carts')
 //connect db
 const db = require('./config/keys.js').mongoURI
-mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
         .then(() => {
             console.log('----MongoBD connected----')
         })

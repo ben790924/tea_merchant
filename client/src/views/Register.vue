@@ -25,9 +25,11 @@
                             <p class="h4 text-center mb-4">註冊</p>
                             <div class="grey-text">
                                 <mdb-input label="姓名" icon="envelope" type="text" v-model="userLogin.name" required invalidFeedback="未輸入姓名" />
-                                <mdb-input label="你的電話" icon="lock" type="number" v-model="userLogin.telephone" required invalidFeedback="未輸入電話" />
-                                <mdb-input label="你的地址" icon="lock" type="text" v-model="userLogin.address" required invalidFeedback="未輸入地址" />
-                                <mdb-input label="你的關於我" icon="lock" type="text" v-model="userLogin.message" />
+                                <mdb-input label="你的電話" icon="mobile-alt" type="number" v-model="userLogin.telephone" required invalidFeedback="未輸入電話" />
+                                <mdb-input label="你的地址" icon="map-marked-alt" type="text" v-model="userLogin.address" required invalidFeedback="未輸入地址" />
+                                <mdb-input label="你的關於我" icon="address-book" type="text" v-model="userLogin.message" />
+                                <p>上傳照片</p>
+                                <input label="選取照片" icon="lock" type="file" @change="fileChange">
                             </div>
                             <div class="text-right" style="transform:translateY(-10px)">
                                 <span class="return-text" @click="transitionSwap=0">返回</span>
@@ -57,7 +59,8 @@ export default {
                 name: '',
                 telephone: '',
                 address: '',
-                message: ''
+                message: '',
+                avatar: ''
             },
             transitionSwap: 0
         }
@@ -74,7 +77,7 @@ export default {
                 transitionNum = 1
             }
             if(email && password) {
-                this.$axios.post(`/api/users/${apiMethod}`, emailOnly ? this.userLogin[payloadValue] : this.userLogin).then(res => {
+                this.$axios.post(`/api/users/${apiMethod}`, emailOnly ? {email: this.userLogin[payloadValue]} : this.userLogin).then(res => {
                     console.log(res)
                     if(res.data.success) {
                         this.transitionSwap = emailOnly ? transitionNum : 1
@@ -92,6 +95,19 @@ export default {
         },
         toLogin() {
             this.$router.push('/login')
+        },
+         fileChange(e) {
+            let files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.createImage(files[0]);
+        },
+        createImage(file) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                this.userLogin.avatar = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
     }
 }

@@ -25,10 +25,16 @@ router.get('/populateUser/:_id', (req, res) => {
     @access public
 */
 router.put('/updateUser/:filterId', (req, res) => {
-    Profile.findOneAndUpdate({_id: new mongoose.Types.ObjectId(req.params.filterId)}, req.body, {new: true})
-    .then(profile => {
-        res.json({profile, success: true})
-    })
+    
+    try {
+        Profile.findOneAndUpdate({_id: new mongoose.Types.ObjectId(req.params.filterId)}, req.body, {new: true})
+        .then(() => {
+            res.json({success: true})
+        })
+    } catch (error) {
+        console.log('upload',error)
+    }
+    
 })
 /* 
     $route  POST api/users/emailValid
@@ -57,16 +63,16 @@ router.post('/register', (req, res) => {
             if(user) {
                 res.json({msg: '信箱已註冊過摟!', fail: true});
             } else {
-                const {name, email, password, message, telephone, address} = req.body;
+                const {name, email, password, message, telephone, address, avatar} = req.body;
                 // gravatar
-                const avatar = gravatar.url(email, {s: '200', r: 'pg', d: 'mm'});
+                const isAvatar = avatar ? avatar : gravatar.url(email, {s: '200', r: 'pg', d: 'mm'})  
 
                 const newUser = new User({
                     email,
                     password
                 });
                 const newProfile = new Profile({
-                    avatar,
+                    avatar:isAvatar,
                     name,
                     message,
                     telephone,

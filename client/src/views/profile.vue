@@ -10,7 +10,8 @@
                 <!-- 頭像 -->
                 <b-col md="2" sm="2">
                     <div class="image">
-                        <b-img :src="profiles.avatar" fluid alt=""></b-img>
+                        <b-img :src="userAvatar" fluid alt="" @click="changeAvatar" class="image-show"></b-img>
+                        <input type="file" name="" ref="inputFile" style="display: none;" @change="fileChange">
                     </div>
                 </b-col>
                 <!-- 資訊 -->
@@ -71,7 +72,8 @@ export default {
             profiles: {},
             email: '',
             editMode: 0,
-            profileId: ''
+            profileId: '',
+            userAvatar: ''
         }
     },
     methods: {
@@ -81,6 +83,7 @@ export default {
                 this.profiles = res.data[0].profiles[0];
                 this.email = res.data[0].email
                 this.profileId = res.data[0].profiles[0]._id
+                this.userAvatar = res.data[0].profiles[0].avatar
             })
         },
         updateProfile(field) {
@@ -89,12 +92,41 @@ export default {
                     this.editMode = 0
                 }
             })
+        },
+        changeAvatar() {
+            this.$refs.inputFile.click(() => {
+                this.fileChange()
+            })
+        },
+        fileChange(e) {
+            let files = e.target.files || e.dataTransfer.files;
+            if (!files.length) {
+                return;
+            }
+            console.log(files)
+            this.createImage(files[0]).then(() => {
+                this.$axios.put(`api/users/updateUser/${this.profileId}`, {avatar: this.userAvatar}).then(res => {
+                    console.log('改圖片', res)
+                })
+            })
+        },
+        createImage(file) {
+            return new Promise((resolve, reject) => {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    this.userAvatar = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                resolve()
+            })
         }
     },
     filters: {
         formatISOdate(v) {
-            let date = new Date(v);
-            return `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+            if(typeof(v)==='string') {
+                let date = new Date(v);
+                return `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+            }
         }
     },
     created() {
@@ -134,6 +166,21 @@ export default {
                 width: 200px;
                 height: 34px;
             }
+        }
+    }
+    .image{
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .image-show{
+            max-height: 250px;
+            min-width: 199px;
+            min-height: 210px;
+            cursor: pointer;
+        }
+        &:hover{
+            box-shadow: 0 0 5px rgb(86, 255, 80);
         }
     }
 }
