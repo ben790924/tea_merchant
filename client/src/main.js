@@ -16,6 +16,10 @@ import Vuex from 'vuex'
 import store from './store/index'
 import VueCarousel from 'vue-carousel'
 import currencyFilter from '../src/filter/currency'
+// vue-loading-overlay
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
+Vue.use(Loading)
 Vue.filter('currency', currencyFilter)
 Vue.use(VueCarousel)
 Vue.use(Vuex)

@@ -10,8 +10,9 @@
                 <!-- 頭像 -->
                 <b-col md="2" sm="2">
                     <div class="image">
-                        <b-img :src="userAvatar" fluid alt="" @click="triggerInputFile" class="image-show"></b-img>
+                        <b-img :src="userAvatar" fluid alt="" @click="triggerInputFile" class="image-show" v-if="!isLoading"></b-img>
                         <input type="file" name="" ref="inputFile" style="display: none;" @change="uploadAvatar">
+                        <loading :active.sync="isLoading" :is-full-page="false"></loading>
                     </div>
                 </b-col>
                 <!-- 資訊 -->
@@ -55,8 +56,12 @@
 </template>
 
 <script>
+import Loading from 'vue-loading-overlay';
 export default {
     name: 'profile',
+    components: {
+        Loading
+    },
     data() {
         return {
             items: [
@@ -73,7 +78,8 @@ export default {
             email: '',
             editMode: 0,
             profileId: '',
-            userAvatar: ''
+            userAvatar: '',
+            isLoading: false
         }
     },
     methods: {
@@ -101,6 +107,8 @@ export default {
         uploadAvatar(e) {
             const files = e.target.files || e.dataTransfer.files;
             const formData = new FormData();
+                this.isLoading = true
+
             formData.append('file', files[0])
             formData.append('upload_preset', process.env.VUE_APP_CLOUD_UPLOADPRESET)
             if (!files.length) {
@@ -120,6 +128,7 @@ export default {
                 console.log(upload)
                 this.userAvatar = upload.data.secure_url
                 localStorage.setItem('p_ids', upload.data.public_id)
+                this.isLoading = false
                 //上傳到profile 資料庫
                 this.$axios.put(`api/users/updateUser/${this.profileId}`, {'avatar' : upload.data.secure_url})
                 .then(res => {
