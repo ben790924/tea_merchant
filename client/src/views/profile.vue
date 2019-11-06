@@ -10,8 +10,8 @@
                 <!-- 頭像 -->
                 <b-col md="2" sm="2">
                     <div class="image">
-                        <b-img :src="userAvatar" fluid alt="" @click="changeAvatar" class="image-show"></b-img>
-                        <input type="file" name="" ref="inputFile" style="display: none;" @change="fileChange">
+                        <b-img :src="userAvatar" fluid alt="" @click="triggerInputFile" class="image-show"></b-img>
+                        <input type="file" name="" ref="inputFile" style="display: none;" @change="uploadAvatar">
                     </div>
                 </b-col>
                 <!-- 資訊 -->
@@ -93,31 +93,35 @@ export default {
                 }
             })
         },
-        changeAvatar() {
+        triggerInputFile() {
             this.$refs.inputFile.click(() => {
-                this.fileChange()
+                this.uploadAvatar()
             })
         },
-        fileChange(e) {
-            let files = e.target.files || e.dataTransfer.files;
+        uploadAvatar(e) {
+            const files = e.target.files || e.dataTransfer.files;
+            const formData = new FormData();
+            formData.append('file', files[0])
+            formData.append('upload_preset', process.env.VUE_APP_CLOUD_UPLOADPRESET)
             if (!files.length) {
                 return;
             }
-            console.log(files)
-            this.createImage(files[0]).then(() => {
-                this.$axios.put(`api/users/updateUser/${this.profileId}`, {avatar: this.userAvatar}).then(res => {
-                    console.log('改圖片', res)
+            this.$axios({
+                url: process.env.VUE_APP_CLOUD_BASEURI,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: formData
+            }).then(res => {
+                console.log(res)
+                this.userAvatar = res.data.secure_url
+                this.$axios.put(`api/users/updateUser/${this.profileId}`, {'avatar' : res.data.secure_url})
+                .then(res => {
+                    console.log('上傳到DB成功?', res)
                 })
-            })
-        },
-        createImage(file) {
-            return new Promise((resolve, reject) => {
-                let reader = new FileReader();
-                reader.onload = (e) => {
-                    this.userAvatar = e.target.result;
-                };
-                reader.readAsDataURL(file);
-                resolve()
+            }).catch(err => {
+                console.log('cloudinary upload image error', err)
             })
         }
     },
@@ -131,6 +135,7 @@ export default {
     },
     created() {
         this.getProfile()
+        console.log(process.env.VUE_APP_CLOUD_BASEURI)
     }
 }
 </script>
