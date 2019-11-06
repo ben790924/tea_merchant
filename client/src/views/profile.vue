@@ -106,6 +106,9 @@ export default {
             if (!files.length) {
                 return;
             }
+            if(localStorage.p_ids) {//先檢查是否有原本照片)，若有及刪除，保持一個client使用一張照片
+                this.deleteAvatar(localStorage.p_ids)
+            }
             this.$axios({
                 url: process.env.VUE_APP_CLOUD_BASEURI,
                 method: 'POST',
@@ -113,16 +116,27 @@ export default {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 data: formData
-            }).then(res => {
-                console.log(res)
-                this.userAvatar = res.data.secure_url
-                this.$axios.put(`api/users/updateUser/${this.profileId}`, {'avatar' : res.data.secure_url})
+            }).then(upload => {
+                console.log(upload)
+                this.userAvatar = upload.data.secure_url
+                localStorage.setItem('p_ids', upload.data.public_id)
+                //上傳到profile 資料庫
+                this.$axios.put(`api/users/updateUser/${this.profileId}`, {'avatar' : upload.data.secure_url})
                 .then(res => {
-                    console.log('上傳到DB成功?', res)
+                    console.log('更新avatar field', res)
                 })
             }).catch(err => {
                 console.log('cloudinary upload image error', err)
             })
+        },
+        deleteAvatar(p_id) {
+            if(p_id) {
+                this.$axios.post('api/cloudinaryDelete', {public_ids: p_id}).then(res => {
+                console.log('刪除', res)
+                }).catch(err => {
+                    console.log('刪除頭像錯誤', err)
+                })
+            }
         }
     },
     filters: {

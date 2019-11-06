@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
+const cloudinary = require('cloudinary');
 //body parser
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
@@ -43,6 +44,17 @@ app.post('/api/localAuth', passport.authenticate('jwt', {session: false}), (req,
     console.log('req.session', req.body)
     res.json({success: true})
 })
+cloudinary.config({
+  cloud_name: 'dgikzmdar',
+  api_key: '761486532254961',
+  api_secret: 'KA-iJ3YmQQ5v1D9ZUC29JuJbqA0'
+})
+app.post('/api/cloudinaryDelete', (req, res) => {
+  cloudinary.v2.api.delete_resources(req.body.public_ids, {resource_type: 'image'}, (err, result) => {
+    res.json({err, result})
+  });
+})
+
 //測試專區
 
 app.use('/api/users', users) // 訪問 固定的api/users/xxx, xxx代表 users.js 裡面的接口名
