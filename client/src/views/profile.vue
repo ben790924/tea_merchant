@@ -176,8 +176,8 @@ export default {
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        &>div{
-            margin-bottom: 5px;
+        &>div:not(.edit-wrapper){
+            margin-bottom: 18px;
             cursor: pointer;
             &>span{
                 font-weight: bold;
@@ -200,11 +200,10 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        min-height: 210px;
         .image-show{
-            max-height: 250px;
-            min-width: 199px;
-            min-height: 210px;
             cursor: pointer;
+            max-height: 250px;
         }
         &:hover{
             box-shadow: 0 0 5px rgb(86, 255, 80);
