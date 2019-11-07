@@ -107,36 +107,36 @@ export default {
         uploadAvatar(e) {
             const files = e.target.files || e.dataTransfer.files;
             const formData = new FormData();
-                this.isLoading = true
-
             formData.append('file', files[0])
             formData.append('upload_preset', process.env.VUE_APP_CLOUD_UPLOADPRESET)
             if (!files.length) {
                 return;
-            }
-            if(localStorage.p_ids && localStorage.p_ids.split('&')[1] === this.profileId) {//先檢查是否有原本照片)，若有及刪除，保持一個client使用一張照片
-                this.deleteAvatar(localStorage.p_ids.split('&')[0])
-            }
-            this.$axios({
-                url: process.env.VUE_APP_CLOUD_BASEURI,
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data: formData
-            }).then(upload => {
-                console.log(upload)
-                this.userAvatar = upload.data.secure_url
-                localStorage.setItem('p_ids', `${upload.data.public_id}&${this.profileId}`)//asodjaoisd%213l123kjsdsd
-                this.isLoading = false
-                //上傳到profile 資料庫
-                this.$axios.put(`api/users/updateUser/${this.profileId}`, {'avatar' : upload.data.secure_url})
-                .then(res => {
-                    console.log('更新avatar field', res)
+            } else {
+                this.isLoading = true
+                if(localStorage.p_ids && localStorage.p_ids.split('&')[1] === this.profileId) {//先檢查是否有原本照片)，若有及刪除，保持一個client使用一張照片
+                    this.deleteAvatar(localStorage.p_ids.split('&')[0])
+                }
+                this.$axios({
+                    url: process.env.VUE_APP_CLOUD_BASEURI,
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    data: formData
+                }).then(upload => {
+                    console.log(upload)
+                    this.userAvatar = upload.data.secure_url
+                    localStorage.setItem('p_ids', `${upload.data.public_id}&${this.profileId}`)//asodjaoisd%213l123kjsdsd
+                    this.isLoading = false
+                    //上傳到profile 資料庫
+                    this.$axios.put(`api/users/updateUser/${this.profileId}`, {'avatar' : upload.data.secure_url})
+                    .then(res => {
+                        console.log('更新avatar field', res)
+                    })
+                }).catch(err => {
+                    console.log('cloudinary upload image error', err)
                 })
-            }).catch(err => {
-                console.log('cloudinary upload image error', err)
-            })
+            }
         },
         deleteAvatar(p_id) {
             if(p_id) {

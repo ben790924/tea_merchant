@@ -9,7 +9,7 @@
 TODO : 
 1. 登入後登入按鈕要隱蔽 ok
 2. 登入後不能再進入登入畫面(beforeEach) ok
-3. 頭像上傳 public_ids 都會用到同一個，要用token辨識
+3. BUG:頭像點開來後過幾秒案取消  他會觸發`api/users/updateUser/${this.profileId}` ok
 4. 登出功能 ok
 5. 後臺系統>使用者schema要有isAdmin ok
 
