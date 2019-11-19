@@ -5,20 +5,14 @@
           <b-breadcrumb :items="items" class="my-3 breadcrumb"></b-breadcrumb>
       </b-row>
       <b-row align-h="center">
-        <b-card
-          overlay
-          img-src="https://picsum.photos/900/250/?image=3"
-          img-alt="Card Image"
-          text-variant="white"
-          title="實體店面位置圖"
-          sub-title-text-variant="white"
-          sub-title="免費試喝"
-          class=""
-        >
-          <b-card-text style="color: #fff;font-size: 24px;">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur totam corporis sit itaque eveniet ipsum laboriosam. Possimus eligendi dolor cupiditate!
-          </b-card-text>
-        </b-card>
+        <carousel :perPageCustom="[[320, 1], [480, 1], [768, 1], [1080, 1]]" :autoplay="true" :autoplayHoverPause="true" paginationActiveColor="green" :paginationSize="10" :paginationPadding="5" :navigationEnabled="true">
+          <slide>
+            <img style="width: 100%" src="../assets/carousel-tea.jpg" alt="">
+          </slide>
+          <slide>
+            <img style="width: 100%" src="../assets/carousel-tea.jpg" alt="">
+          </slide>
+        </carousel>
       </b-row>
     </b-container>
     <!-- 熱門產品 -->

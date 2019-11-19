@@ -5,7 +5,6 @@
                 <div class="left-pic-main">
                     <img :src="modalContent.img" alt="" class="left-pic-main-pic">
                 </div>
-                <div class="left-pic-preview"></div>
             </div>
             <div class="right-content">
                 <div class="right-content-title the-same">{{ modalContent.title }}</div>
@@ -125,20 +124,18 @@ export default {
         //  border: 1px solid #000;
          display: flex;
          flex-direction: column;
+         justify-content: flex-start;
+         align-items: center;
          padding: 20px;
          .left-pic-main{
-             height: 70%;
-             margin-bottom: 20px;
+             height: 100%;
+            //  margin-bottom: 20px;
              .left-pic-main-pic{
                  width: 100%;
                  height: 100%;
                  background-size: cover;
                  background-position: center center;
              }
-         }
-         .left-pic-preview{
-             border: 1px solid #000;
-             height: 25%;
          }
         }
         .right-content{
